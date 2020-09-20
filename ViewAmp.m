@@ -22,7 +22,7 @@ function varargout = ViewAmp(varargin)
 
 % Edit the above text to modify the response to help ViewAmp
 
-% Last Modified by GUIDE v2.5 31-Dec-2019 11:25:26
+% Last Modified by GUIDE v2.5 09-Sep-2020 20:39:25
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -578,7 +578,8 @@ if length(dir([handles.DirectoryName '\*.raw'])) == 0
         % Average Intensity vs time(axes4)
         axes(handles.axes4);
         num = fix(EndPoint/Fs);
-        Amp(num, 1) = 2*std(IntensityOfROI(BeginPoint:EndPoint));
+        % Amp(num, 1) = 2*std(IntensityOfROI(BeginPoint:EndPoint)); % a wrong data
+        Amp(num, 1) = 1.414*max(P1(3:end-1));
         TestTime = (1:length(Amp))';
         plot(TestTime, Amp, '.');
         xlim([0 handles.ACtime])
@@ -645,7 +646,8 @@ else
         % Average Intensity vs time(axes4)
         axes(handles.axes4);
         num = fix(EndPoint/Fs);
-        Amp(num, 1) = 2*std(IntensityOfROI(BeginPoint:EndPoint));
+        % Amp(num, 1) = 2*std(IntensityOfROI(BeginPoint:EndPoint)); % a wrong data
+        Amp(num, 1) = 1.414*max(P1(3:end-1));
         TestTime = (1:length(Amp))';
         plot(TestTime, Amp, '.');
         xlim([0 handles.ACtime])
@@ -682,8 +684,8 @@ mask = handles.mask;
 Amp = handles.Amp;
 TestTime = handles.TestTime;
 ACtime = handles.ACtime;
-fitresult = handles.fitresult;
-gof = handles.gof;
+% fitresult = handles.fitresult;
+% gof = handles.gof;
 expName = handles.expName;
 
 [folder_structure, current_folder] = fileparts(handles.DirectoryName);
@@ -701,7 +703,8 @@ imwrite(mask, GUIsaved);
 
 
 SavePath = [folder_structure '\MAT\' current_folder '\' expName '_roi' num2str(roiNumber) '.mat'];
-save(SavePath, 'IntensityOfROI', 'Amp', 'TestTime', 'ACtime', 'fitresult', 'gof');
+save(SavePath, 'IntensityOfROI', 'Amp', 'TestTime', 'ACtime');
+% % save(SavePath, 'IntensityOfROI', 'Amp', 'TestTime', 'ACtime', 'fitresult', 'gof');
 
 
 % --- Executes on button press in ZoomOn.
